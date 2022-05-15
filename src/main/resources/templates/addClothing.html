@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div layout:fragment="mainContent">
+        <div class="container-fluid">
+            <div class="row-2">
+                <div class="col-12">
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <button type="button" class="btn btn-primary" style="background-color: #146c43; color: white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            + ADD NEW
+                        </button>
+                    </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">ADD NEW CLOTHING</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form th:action="@{'/addClothing'}" method="post">
+                                        <div class="modal-body">
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <label>POL:</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <select class="form-select" aria-label="Default select example" name="pol_id">
+                                                        <option th:each="p : ${pol}"  th:text="${p.pol}" th:value="${p.id}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <label>CATEGORY:</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <select class="form-select" aria-label="Default select example" name="categ_id">
+                                                        <option th:each="c : ${category}"  th:text="${c.category}" th:value="${c.id}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <label>SIZE:</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" name="size" placeholder="Insert Size">
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <label>PRICE:</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" name="price" placeholder="Insert Price">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <label>BRAND:</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <select class="form-select" aria-label="Default select example" name="brand_id">
+                                                        <option th:each="b : ${brand}"  th:text="${b.brand}" th:value="${b.id}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button class="btn btn-success">ADD CLOTHING</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>CATEGORY</th>
+                                            <th>POL</th>
+                                            <th>SIZE</th>
+                                            <th>PRICE</th>
+                                            <th>BRAND</th>
+                                            <th sec:authorize="hasAnyRole('ROLE_ADMIN')"  width="7%">DETAILS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="s : ${clothing}">
+                                            <td th:text="${s.id}"></td>
+                                            <td th:text="${s.category.category}"></td>
+                                            <td th:text="${s.pol.pol}"></td>
+                                            <td th:text="${s.size}"></td>
+                                            <td th:text="${s.price}"></td>
+                                            <td th:text="${s.brand.brand}"></td>
+                                            <td>
+                                                <a sec:authorize="hasAnyRole('ROLE_ADMIN')"  th:href="@{'/details/' + ${s.id}}" class="btn btn-primary btn-sm">DETAILS</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
